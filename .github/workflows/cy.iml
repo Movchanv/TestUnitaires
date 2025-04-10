@@ -1,0 +1,31 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - my-feature    # Trigger the pipeline on push to 'my-feature' branch.
+  pull_request:
+    branches:
+      - master        # Trigger the pipeline on PRs to 'master'.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Runs on the latest Ubuntu environment.
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'  # Use the appropriate Java version for your project.
+        distribution: 'adoptopenjdk'
+
+    - name: Build Project
+      run: |
+        javac -d bin src/**/*.java  # Compile all Java files into the 'bin' directory.
+    
+    - name: Run Tests
+      run: |
+        java -cp bin org.junit.runner.JUnitCore TestClassName  # Run tests with JUnit (replace with actual test class).
